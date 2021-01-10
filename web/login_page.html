@@ -1,0 +1,38 @@
+<!-- login validations -->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<title>Test Maker</title> 
+	</head>
+	<body>
+		<form class="container" method="post" action="login_page.php">
+			<img class="img" src="images/img-3.png" alt="avatar">
+			
+			<h1>Вход в системата</h1>
+			<br /><br />
+			
+			<label for="username">Потребителско име</label><br />
+			<input
+				type="text"
+				name="username"
+				id="username"
+
+			<label for="password">Парола</label><br />
+			<input
+				type="password"
+				name="password"
+				id="password"
+				required
+			/><br /><br /><br />
+		
+			<button type="submit" name="login" class="button button2">Вход</button>
+			<div class="right">
+			<br /><br />
+				<p>Ако все още нямаш регистрация натисни <a href="register_page.php">тук</a>.</p>
+			</div>				
+		</form>	
+	</body>
+</html>

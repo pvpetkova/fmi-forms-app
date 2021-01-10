@@ -1,0 +1,91 @@
+<!-- validations 
+	
+		if (empty($username)||empty($email)||empty($password)) {
+			array_push($errors, "Всички полета за задължителни.");
+		}
+		if (!preg_match('/^[a-zA-Z0-9\.\-_]*$/u', $username)) {
+			array_push($errors, "* Полето <b>'Потребителско име'</b> може да съдържа главни и малки букви на латиница, цифри и знаците ., - и _.");
+		}
+		if (!preg_match('/^[a-z0-9_-]+(?:\.[a-z0-9_-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/u', $email)) {
+			array_push($errors, "* Въведеният <b>'Имейл'</b> е невалиден.");
+		}
+		if (!preg_match('/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.])(?=.{8,})/u', $password_1)) {
+			array_push($errors, "* Полето <b>'Парола'</b> може да съдържа главни и малки букви на латиница, цифри и знаците ., - и _.");
+		}
+		
+		$sql = "SELECT * FROM users WHERE username='$username'";
+		$result = $connection->query($sql);
+			
+		while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+			array_push($errors, "* Потребителското име е заето.");
+		}
+		$sql = "SELECT * FROM users WHERE email='$email'";
+		$result = $connection->query($sql);
+			
+		while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+			array_push($errors, "* Въведеният имейл е зает.");
+		}
+		
+		if (count($errors) == 0) {	
+			$stmt = $connection->prepare("INSERT INTO users (username, email, password)
+										  VALUES (:username, :email, :password)");
+			$stmt->execute(['username' => $username, 'email' => $email,'password' => $password,]);
+			
+			$_SESSION['username'] = $username;
+			header('location: home_page.php');
+		}
+	}
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<title>Survey Maker</title> 
+	</head>
+	<body>
+		<form class="container" method="post" action="register_page.php">
+			<img class="img" src="images/img-3.png" alt="avatar">
+			
+			<h1>Регистрация</h1>
+			<?php include("errors.php"); ?>
+			<div class="form-control">
+				<label for="username">Потребителско име</label></br>
+				<input
+					type="text"
+					name="username"
+					id="username"
+					required
+					value="<!-- keep old username value in case of error -->" 
+				/>
+			</div>
+			<div class="form-control">
+				<label for="email">Имейл</label><br />
+				<input
+					type="email"
+					name="email"
+					id="email"
+					required
+					value="<!-- keep old email value in case of error -->" 
+				/>
+			</div>
+			<div class="form-control">
+				<label for="password">Парола</label><br />
+				<input
+					type="password"
+					name="password"
+					id="password"
+					required
+				/>
+			</div>
+			<br />
+			<div>
+				<button type="submit" name="register" class="button button2">Регистрация</button>
+				<div class="right">
+					<br /><br />
+					<p>Ако вече имаш регистрация натисни <a href="login_page.php">тук</a>.</p>
+				 </div>
+			</div>
+		</form>
+	</body>
+</html>

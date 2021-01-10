@@ -1,0 +1,82 @@
+<!--?php
+	if(isset($_POST['next'])||isset($_POST['last'])){
+			
+		$sql = "SELECT survey_id FROM surveys WHERE survey_name='$survey_name' AND user_id='$username'";
+		$result = $connection->query($sql);
+			
+		while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+			$survey_id = $row['survey_id'];
+		}		
+		
+		$stmt = $connection->prepare("INSERT INTO questions (text, survey_id)
+									  VALUES (:question_text, :survey_id)");
+			
+			//find question ID
+			$sql = "SELECT question_id FROM questions WHERE text='$question_text'";
+			$result = $connection->query($sql);
+			
+			while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+				$quest_id = $row['question_id'];
+			}
+			
+			foreach($choices as $choice => $value){
+				if($value != ''){
+					$stmt = $connection->prepare("INSERT INTO answers (quest_id, answer_text)
+												  VALUES (:quest_id, :answer_text)");
+				}
+			}
+				
+			if(isset($_POST['last'])) {
+				header('location: my_tests.php'); 
+			} else {
+				header('location: test.php'); 
+			}
+		}
+	}
+-->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<title>Survey Maker</title> 
+	</head>
+	<body>
+		<div class="topnav">
+		  <a href="home_page.php">Начало</a>
+		  <a href="survey.php">Създай анкета</a>
+		  <a class="active" href="my_tests.php">Моите анкети</a>
+		  <a class="active" href="logout.php" style="float:right;">Изход</a>
+		</div>
+			
+		<div class="container">
+		<img class="img" src="images/img-4.png" alt="pen">
+			<h1>Създаване на анкета</h1>
+			<form method="post" action="test.php" enctype="multipart/form-data">
+			
+				<label>Въпрос: </label>
+				<textarea name="question_text" placeholder="Твоят текст тук.." class="longtext"><!-- keep old question_text value in case of error -->
+</textarea><br /><br />
+				
+				<label>Отговор 1: </label><br />
+				<input type="text" name="choice1" required value="<!-- keep old choise1 value in case of error -->"/><br />
+			
+				<label>Отговор 2: </label><br />
+				<input type="text" name="choice2" required value="<!-- keep old choise2 value in case of error -->"/><br />
+			
+				<label>Отговор 3: </label><br />
+				<input type="text" name="choice3" value="<!-- keep old choise3 value in case of error -->"/><br>
+			
+				<label>Отговор 4: </label><br />
+				<input type="text" name="choice4" value="<!-- keep old choise4 value in case of error -->"/><br />
+			
+				<label>Отговор 5: </label><br />
+				<input type="text" name="choice5" value="<!-- keep old choise5 value in case of error -->"/><br />
+			
+				<button type="submit" name="next" class="button button2">Следващ въпрос</button><br /><br /><br />
+				<button type="submit" name="last" class="button button2">Завърши анкетата</button>
+			</form>
+		</div>
+	</body>
+</html>
