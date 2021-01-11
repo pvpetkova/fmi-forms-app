@@ -1,43 +1,43 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" type="text/css" href="style.css">
-		<title>Survey Maker</title> 
-	</head>
-	<body>	
-		<div class="container">		
-		<form action="check_answ.php" method="post">
-			<h1><!--print $survey_name;
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Survey Maker</title>
+</head>
+<body>
+<div class="container">
+    <form action="check_answ.php" method="post">
+        <h1><!--print $survey_name;
 			--></h1>
-			
-			<!-- ?php
-			$i = 1;
-			$sql = "SELECT * FROM questions 
-					WHERE survey_id = '$survey_id'";
-			$result = $connection->query($sql); -->
-			
-			<div class='box box2'>
-			<!-- print question text and possible answers
-			while ($row = $result->fetch(PDO::FETCH_ASSOC)) { 
-				$quest_id = $row['question_id']; ?>
-				
-				<h4><!-- question № $i++ . '. ' . $row['text']; ></h4>
-				
-					$sql2 = "SELECT * FROM answers 
-							 WHERE quest_id='$quest_id'";
-					$result2 = $connection->query($sql2);
-					
-					while ($row2 = $result2->fetch(PDO::FETCH_ASSOC)) { ?>
-						<input type="radio" name="quizcheck[<!-- print 'answer_id'" value=" echo $row2['correct']; ?>">
-							<--?php echo htmlentities($row2['answer_text'], ENT_QUOTES); ?></input><br /><br />
-				 -->	
-					
-			
-			
-			<button type="submit" name="finish_test" class="button">Завърши анкетата</button><br /><br />
-			</div>
-		</form>
-		</div>
-	</body>
+
+        <!-- ?php
+        $i = 1;
+        $sql = "SELECT * FROM questions
+                WHERE survey_id = '$survey_id'";
+        $result = $connection->query($sql); -->
+
+        <div class='box box2'>
+            <!-- print question text and possible answers
+            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                $quest_id = $row['question_id']; ?>
+
+                <h4> question № $i++ . '. ' . $row['text']; ></h4>
+
+                    $sql2 = "SELECT * FROM answers
+                             WHERE quest_id='$quest_id'";
+                    $result2 = $connection->query($sql2);
+
+                    while ($row2 = $result2->fetch(PDO::FETCH_ASSOC)) { ?>
+                        <input type="radio" name="quizcheck[<!-- print 'answer_id'" value=" echo $row2['correct']; ?>">
+                            <--?php echo htmlentities($row2['answer_text'], ENT_QUOTES); ?></input><br /><br />
+                 -->
+
+
+            <button type="submit" name="finish_test" class="button">Завърши анкетата</button>
+            <br/><br/>
+        </div>
+    </form>
+</div>
+</body>
 </html>

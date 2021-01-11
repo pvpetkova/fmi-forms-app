@@ -9,10 +9,11 @@ import javax.persistence.Id;
 
 @Data
 @AllArgsConstructor
-@Entity
-public class Surveys {
+@NoArgsConstructor
+@Entity(name = "questions")
+public class Question {
     @Id
+    private Long questionId;
     private Long surveyId;
-    private String surveyName;
-    private Long userId;
+    private String questionText;
 }

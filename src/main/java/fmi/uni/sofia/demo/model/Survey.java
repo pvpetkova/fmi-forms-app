@@ -10,11 +10,13 @@ import javax.persistence.Id;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Answers {
+@Entity(name = "surveys")
+public class Survey {
     @Id
-    private Long answerId;
-    private Long questionId;
-    private String answerText;
-    private boolean isCorrect;
+    private Long surveyId;
+    private String surveyName;
+    private Long userId;
+//    @OneToMany()
+//    @JoinColumn(name = "survey_id")
+//    private List<Questions> questions;
 }

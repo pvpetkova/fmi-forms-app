@@ -24,24 +24,24 @@
 	<head>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" type="text/css" href="style.css">
-		<title>Survey Maker</title> 
+		<title>Survey Maker</title>
 	</head>
 	<body>
 		<div class="topnav">
-		  <a href="home_page.php">Начало</a>
-		  <a href="survey.php">Създай анкета</a>
-		  <a class="active" href="my_tests.php">Моите анкети</a>
+		  <a href="home_page.html">Начало</a>
+		  <a href="survey.html">Създай анкета</a>
+		  <a class="active" href="my_tests.html">Моите анкети</a>
 		  <a class="active" href="logout.php" style="float:right;">Изход</a>
 		</div>
-			
+
 		<div class="container">
 			<img class="img" src="images/img-2.png" alt="logo">
 			<h1>Създаване на нова анкета</h1><br /><br />
-			<form method="post" action="survey.php">
-			
-				<label>Заглавие на анкета: </label><br />
-				<input type="text" name="survey_name" required /><br />
-				
+			<form method="post" action="survey.html">
+
+				<label for="surveyName">Заглавие на анкета: </label><br />
+				<input id="surveyName" type="text" name="survey_name" required /><br />
+
 				<button type="submit" name="add_quest" class="button button3">Добавяне на въпроси</button>
 			</form>
 		</div>

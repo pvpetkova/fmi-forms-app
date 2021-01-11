@@ -38,54 +38,54 @@
 -->
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" type="text/css" href="style.css">
-		<title>Survey Maker</title> 
-	</head>
-	<body>
-		<form class="container" method="post" action="register_page.php">
-			<img class="img" src="images/img-3.png" alt="avatar">
-			
-			<h1>Регистрация</h1>
-			<?php include("errors.php"); ?>
-			<div class="form-control">
-				<label for="username">Потребителско име</label></br>
-				<input
-					type="text"
-					name="username"
-					id="username"
-					required
-					value="<!-- keep old username value in case of error -->" 
-				/>
-			</div>
-			<div class="form-control">
-				<label for="email">Имейл</label><br />
-				<input
-					type="email"
-					name="email"
-					id="email"
-					required
-					value="<!-- keep old email value in case of error -->" 
-				/>
-			</div>
-			<div class="form-control">
-				<label for="password">Парола</label><br />
-				<input
-					type="password"
-					name="password"
-					id="password"
-					required
-				/>
-			</div>
-			<br />
-			<div>
-				<button type="submit" name="register" class="button button2">Регистрация</button>
-				<div class="right">
-					<br /><br />
-					<p>Ако вече имаш регистрация натисни <a href="login_page.php">тук</a>.</p>
-				 </div>
-			</div>
-		</form>
-	</body>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Survey Maker</title>
+</head>
+<body>
+<form class="container" method="post" action="register_page.php">
+    <img class="img" src="images/img-3.png" alt="avatar">
+
+    <h1>Регистрация</h1>
+    <?php include("errors.php"); ?>
+    <div class="form-control">
+        <label for="username">Потребителско име</label></br>
+        <input
+                type="text"
+                name="username"
+                id="username"
+                required
+                value="<!-- keep old username value in case of error -->"
+        />
+    </div>
+    <div class="form-control">
+        <label for="email">Имейл</label><br/>
+        <input
+                type="email"
+                name="email"
+                id="email"
+                required
+                value="<!-- keep old email value in case of error -->"
+        />
+    </div>
+    <div class="form-control">
+        <label for="password">Парола</label><br/>
+        <input
+                type="password"
+                name="password"
+                id="password"
+                required
+        />
+    </div>
+    <br/>
+    <div>
+        <button type="submit" name="register" class="button button2">Регистрация</button>
+        <div class="right">
+            <br/><br/>
+            <p>Ако вече имаш регистрация натисни <a href="login_page.html">тук</a>.</p>
+        </div>
+    </div>
+</form>
+</body>
 </html>

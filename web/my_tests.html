@@ -1,32 +1,35 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" type="text/css" href="style.css">
-		<title>Survey Maker</title> 
-	</head>
-	<body>
-		<div class="topnav">
-		  <a href="home_page.php">Начало</a>
-		  <a href="survey.php">Създай анкета</a>
-		  <a class="active" href="my_tests.php">Моите анкети</a>
-		  <a class="active" href="logout.php" style="float:right;">Изход</a>
-		</div>
-			
-		<div class="container">
-			<img class="img" src="images/img-2.png" alt="logo">
-			<h1>Моите анкети</h1><br />
-			<!-- SELECT * FROM surveys WHERE user_id='$username' -->
-					
-					<div class='box'>
-						<h3><!--?php echo $survey_name; --></h3>
-						<p>&#9655 Този тест е попълнен <!-- select COUNT(answers) from given_answers_table where survey_id='$survey_id'--> пъти.(
-								<a href="view_test.php?test="<!-- + survey_name to url -->подробности</a> 
-						)</p>
-						<a href="view_test.php?test=" class="button button4" >Разгледай тест</a><!-- + survey_name to url --><br /><br />
-						<a href="test_solve.php?id=" class="button button4" >Линк към тест</a><!-- + survey_id to url --><br /><br />
-					</div>
-					<br />
-		</div>
-	</body>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Survey Maker</title>
+</head>
+<body>
+<div class="topnav">
+    <a href="home_page.html">Начало</a>
+    <a href="survey.html">Създай анкета</a>
+    <a class="active" href="my_tests.html">Моите анкети</a>
+    <a class="active" href="logout.php" style="float:right;">Изход</a>
+</div>
+
+<div class="container">
+    <img class="img" src="images/img-2.png" alt="logo">
+    <h1>Моите анкети</h1><br/>
+    <!-- SELECT * FROM surveys WHERE user_id='$username' -->
+
+    <div class='box'>
+        <h3><!--?php echo $survey_name; --></h3>
+        <p>&#9655 Този тест е попълнен
+            <!-- select COUNT(answers) from given_answers_table where survey_id='$survey_id'--> пъти.(
+            <!--								<a href="view_test.php?test="&lt;!&ndash; + survey_name to url &ndash;&gt;подробности</a>-->
+            )</p>
+        <a href="view_test.php?test=" class="button button4">Разгледай</a><!-- + survey_name to url --><br/><br/>
+        <!--		TODO: how do you copy a working link? -->
+        <a href="test_solve.php?id=" class="button button4">Копирай линк</a><!-- + survey_id to url -->
+        <br/><br/>
+    </div>
+    <br/>
+</div>
+</body>
 </html>

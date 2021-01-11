@@ -6,15 +6,14 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Questions {
+@Entity(name = "answers")
+public class Answer {
     @Id
+    private Long answerId;
     private Long questionId;
-    private Long surveyId;
-    private String questionText;
+    private String answerText;
 }

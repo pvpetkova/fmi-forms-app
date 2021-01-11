@@ -9,8 +9,8 @@ import javax.persistence.Id;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Users {
+@Entity(name = "users")
+public class User {
     @Id
     private Long userId;
     private String username;
