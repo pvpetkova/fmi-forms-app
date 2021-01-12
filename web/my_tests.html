@@ -4,8 +4,40 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Survey Maker</title>
+    <script>
+        function getSurveysForUser() {
+            xhttp = new XMLHttpRequest();
+            var html = "<table><tbody>";
+
+            const url = "http://localhost:8080/surveys/for-user/natalka98";
+            xhttp.open('GET', url, true);
+            xhttp.send(null);
+            xhttp.onreadystatechange = function () {
+
+                console.log(xhttp.readyState)
+                console.log(xhttp.status)
+
+                if (xhttp.status === 200) {
+                    if (xhttp.readyState === 4) {
+                        const det = eval("(" + xhttp.responseText + ")");
+                        console.log(det)
+                        for (let i = 0; i < det.length; i++) {
+                            console.log(det[i].surveyName)
+                            // if (!det.hasOwnProperty(det[i])) continue;
+                            // Add our row:
+                            html += "<tr><th>" + det[i].surveyName + "</th><td>" + det[i].surveyName + "</td></tr>";
+                        }
+                        html += "</tbody></table>";
+                        document.getElementById('some-id').innerHTML = html;
+                    }
+                } else
+                    console.log("Error: " + xhttp.responseText);
+            };
+            // Return the table
+        }
+    </script>
 </head>
-<body>
+<body onload="getSurveysForUser()">
 <div class="topnav">
     <a href="home_page.html">Начало</a>
     <a href="survey.html">Създай анкета</a>
@@ -16,9 +48,9 @@
 <div class="container">
     <img class="img" src="images/img-2.png" alt="logo">
     <h1>Моите анкети</h1><br/>
-    <!-- SELECT * FROM surveys WHERE user_id='$username' -->
 
     <div class='box'>
+        <div id="some-id"></div>
         <h3><!--?php echo $survey_name; --></h3>
         <p>&#9655 Този тест е попълнен
             <!-- select COUNT(answers) from given_answers_table where survey_id='$survey_id'--> пъти.(

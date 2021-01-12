@@ -1,8 +1,10 @@
 package fmi.uni.sofia.demo.endpoints;
 
 
+import fmi.uni.sofia.demo.model.Question;
 import fmi.uni.sofia.demo.model.Survey;
 import fmi.uni.sofia.demo.model.User;
+import fmi.uni.sofia.demo.repo.QuestionRepository;
 import fmi.uni.sofia.demo.repo.SurveyRepository;
 import fmi.uni.sofia.demo.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class SurveysController {
     private SurveyRepository surveyRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private QuestionRepository questionRepository;
 
     @GetMapping(path = "/all")
     public @ResponseBody
@@ -46,10 +50,23 @@ public class SurveysController {
         return surveyRepository.findById(surveyId).orElse(null);
     }
 
+    @GetMapping(path = "/{surveyId}/questions")
+    public @ResponseBody
+    List<Question> getQuestionsForSurvey(@PathVariable(value = "surveyId") Long surveyId) {
+        return questionRepository.findAllBySurveyId(surveyId);
+    }
+
     @PostMapping(path = "/add")
     public @ResponseBody
     String addNewSurvey(@RequestBody Survey survey) {
         surveyRepository.save(survey);
+        return "Saved";
+    }
+
+    @PostMapping(path = "/add-question")
+    public @ResponseBody
+    String addNewSurvey(@RequestBody Question question) {
+        questionRepository.save(question);
         return "Saved";
     }
 }

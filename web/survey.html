@@ -21,29 +21,45 @@
 
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" type="text/css" href="style.css">
-		<title>Survey Maker</title>
-	</head>
-	<body>
-		<div class="topnav">
-		  <a href="home_page.html">Начало</a>
-		  <a href="survey.html">Създай анкета</a>
-		  <a class="active" href="my_tests.html">Моите анкети</a>
-		  <a class="active" href="logout.php" style="float:right;">Изход</a>
-		</div>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Survey Maker</title>
+    <script>
+        function saveSurvey() {
+            xhttp = new XMLHttpRequest();
+            const surveyName = document.getElementById("surveyName").value;
 
-		<div class="container">
-			<img class="img" src="images/img-2.png" alt="logo">
-			<h1>Създаване на нова анкета</h1><br /><br />
-			<form method="post" action="survey.html">
+            const url = "http://localhost:8080/surveys/add";
+            xhttp.open('POST', url, true);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.send(JSON.stringify({
+                surveyName: surveyName,
+                userId: 1
+            }));
 
-				<label for="surveyName">Заглавие на анкета: </label><br />
-				<input id="surveyName" type="text" name="survey_name" required /><br />
+            return false;
+        }
+    </script>
+</head>
+<body>
+<div class="topnav">
+    <a href="home_page.html">Начало</a>
+    <a class="active" href="survey.html">Създай анкета</a>
+    <a href="my_tests.html">Моите анкети</a>
+    <a class="active" href="logout.php" style="float:right;">Изход</a>
+</div>
 
-				<button type="submit" name="add_quest" class="button button3">Добавяне на въпроси</button>
-			</form>
-		</div>
-	</body>
+<div class="container">
+    <img class="img" src="images/img-2.png" alt="logo">
+    <h1>Създаване на нова анкета</h1><br/><br/>
+    <form>
+
+        <label for="surveyName">Заглавие на анкета: </label><br/>
+        <input id="surveyName" type="text" name="survey_name" required/><br/>
+
+        <input type="button" value="Добавяне на въпроси" onclick="saveSurvey()" class="button button3"/>
+    </form>
+</div>
+</body>
 </html>

@@ -6,7 +6,7 @@ function init() {
 
 // just a sample method
 function getAllUsers() {
-    const url = "http://localhost:8080/demo/users/all";
+    const url = "http://localhost:8080/users/all";
     xhttp.open('GET', url, true);
     xhttp.send(null);
     xhttp.onreadystatechange = function () {
