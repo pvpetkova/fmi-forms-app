@@ -1,17 +1,46 @@
-<!-- login validations -->
-
 <!DOCTYPE html>
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Test Maker</title>
+	<script>
+        function login() {
+            const form = document.forms["loginForm"];
+            const username = form["username"].value;
+            const password = form["password"].value;
+
+            xhttp = new XMLHttpRequest();
+            const url = "http://localhost:8080/users/all";
+            xhttp.open('GET', url, true);
+            xhttp.send(null);
+
+            xhttp.onreadystatechange = function () {
+                if (xhttp.status === 200) {
+                    if (xhttp.readyState === 4) {
+                        const det = eval("(" + xhttp.responseText + ")");
+                        for (i = 0; i < det.length; i++) {
+                            if(username == det[i].username && password == det[i].password) {
+                                window.location.replace("home_page.html");
+                                document.getElementById("login_error").style.display = "none";
+                                return false;
+                            }
+                        }
+                    }
+                } else
+                    console.log("Error: " + xhttp.responseText);
+            };
+            document.getElementById("login_error").style.display = "inline-block";
+            return false;
+        }
+</script>
 </head>
 <body>
-<form class="container" method="post" action="login_page.html">
+<form class="container" method="post" id="loginForm">
     <img class="img" src="images/img-3.png" alt="avatar">
 
     <h1>Вход в системата</h1>
+    <span class="error"><p id="login_error">Грешно потребителско име и/или парола.</p></span>
     <br/><br/>
 
     <label for="username">Потребителско име</label><br/>
@@ -26,7 +55,7 @@
            required>
     <br/><br/><br/>
 
-    <button type="submit" name="login" class="button button2">Вход</button>
+    <button type="submit" class="button button2" onclick="return login()">Вход</button>
     <div class="right">
         <br/><br/>
         <p>Ако все още нямаш регистрация натисни <a href="register_page.html">тук</a>.</p>

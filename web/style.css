@@ -186,6 +186,10 @@ th, td {
   color: #d964aa;
 } 
 
+#login_error {
+	display: none;
+}
+
 @media (max-width:767px) {
     .img {
         display: none;
