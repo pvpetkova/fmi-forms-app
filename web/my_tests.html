@@ -13,27 +13,25 @@
             xhttp.open('GET', url, true);
             xhttp.send(null);
             xhttp.onreadystatechange = function () {
-
-                console.log(xhttp.readyState)
-                console.log(xhttp.status)
-
                 if (xhttp.status === 200) {
                     if (xhttp.readyState === 4) {
                         const det = eval("(" + xhttp.responseText + ")");
-                        console.log(det)
                         for (let i = 0; i < det.length; i++) {
-                            console.log(det[i].surveyName)
-                            // if (!det.hasOwnProperty(det[i])) continue;
-                            // Add our row:
-                            html += "<tr><th>" + det[i].surveyName + "</th><td>" + det[i].surveyName + "</td></tr>";
+                            // TODO make it work????
+                            const copyText = 'test_solve2.html?surveyId=' + det[i].surveyId + "";
+
+                            html += "        <div class='box'>" +
+                                "            <h3>" + det[i].surveyName + "</h3>" +
+                                "        <a href=\"view_test.html?test=" + det[i].surveyId + "\" class=\"button button4\">Разгледай</a><!-- + survey_name to url -->" +
+                                "        <!--\t\tTODO: how do you copy a working link? -->" +
+                                "        <button onclick='navigator.clipboard.writeText(copyText)' class=\"button button4\">Копирай линк</button><br/>" +
+                                "        </div><br/><br/><br/><br/>";
                         }
-                        html += "</tbody></table>";
-                        document.getElementById('some-id').innerHTML = html;
+                        document.getElementById('surveys-container').innerHTML = html;
                     }
                 } else
                     console.log("Error: " + xhttp.responseText);
             };
-            // Return the table
         }
     </script>
 </head>
@@ -49,18 +47,8 @@
     <img class="img" src="images/img-2.png" alt="logo">
     <h1>Моите анкети</h1><br/>
 
-    <div class='box'>
-        <div id="some-id"></div>
-        <h3><!--?php echo $survey_name; --></h3>
-        <p>&#9655 Този тест е попълнен
-            <!-- select COUNT(answers) from given_answers_table where survey_id='$survey_id'--> пъти.(
-            <!--								<a href="view_test.php?test="&lt;!&ndash; + survey_name to url &ndash;&gt;подробности</a>-->
-            )</p>
-        <a href="view_test.php?test=" class="button button4">Разгледай</a><!-- + survey_name to url --><br/><br/>
-        <!--		TODO: how do you copy a working link? -->
-        <a href="test_solve.php?id=" class="button button4">Копирай линк</a><!-- + survey_id to url -->
-        <br/><br/>
-    </div>
+    <div id="surveys-container"></div>
+
     <br/>
 </div>
 </body>

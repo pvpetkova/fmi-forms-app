@@ -19,4 +19,5 @@ public class Answer {
     private Long answerId;
     private Long questionId;
     private String answerText;
+    private Long surveyId;
 }
