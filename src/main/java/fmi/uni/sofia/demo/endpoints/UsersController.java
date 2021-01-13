@@ -1,5 +1,6 @@
 package fmi.uni.sofia.demo.endpoints;
 
+import fmi.uni.sofia.demo.model.Survey;
 import fmi.uni.sofia.demo.model.User;
 import fmi.uni.sofia.demo.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,4 +43,5 @@ public class UsersController {
     Iterable<User> getAllUsers() {
         return userRepository.findAll();
     }
+
 }

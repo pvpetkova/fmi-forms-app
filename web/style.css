@@ -182,11 +182,14 @@ th, td {
   width: 100%;
 }
 
-.error {
+span.error {
   color: #d964aa;
-} 
+}
+span.error p {
+  max-width: 50ch;
+}
 
-#login_error {
+#login_error, #register_error, #username_error, #email_error, #password_error, #username_ex_error, #email_ex_error {
 	display: none;
 }
 

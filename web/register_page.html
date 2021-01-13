@@ -1,76 +1,113 @@
-<!-- validations 
-	
-		if (empty($username)||empty($email)||empty($password)) {
-			array_push($errors, "Всички полета за задължителни.");
-		}
-		if (!preg_match('/^[a-zA-Z0-9\.\-_]*$/u', $username)) {
-			array_push($errors, "* Полето <b>'Потребителско име'</b> може да съдържа главни и малки букви на латиница, цифри и знаците ., - и _.");
-		}
-		if (!preg_match('/^[a-z0-9_-]+(?:\.[a-z0-9_-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/u', $email)) {
-			array_push($errors, "* Въведеният <b>'Имейл'</b> е невалиден.");
-		}
-		if (!preg_match('/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.])(?=.{8,})/u', $password_1)) {
-			array_push($errors, "* Полето <b>'Парола'</b> може да съдържа главни и малки букви на латиница, цифри и знаците ., - и _.");
-		}
-		
-		$sql = "SELECT * FROM users WHERE username='$username'";
-		$result = $connection->query($sql);
-			
-		while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-			array_push($errors, "* Потребителското име е заето.");
-		}
-		$sql = "SELECT * FROM users WHERE email='$email'";
-		$result = $connection->query($sql);
-			
-		while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-			array_push($errors, "* Въведеният имейл е зает.");
-		}
-		
-		if (count($errors) == 0) {	
-			$stmt = $connection->prepare("INSERT INTO users (username, email, password)
-										  VALUES (:username, :email, :password)");
-			$stmt->execute(['username' => $username, 'email' => $email,'password' => $password,]);
-			
-			$_SESSION['username'] = $username;
-			header('location: home_page.php');
-		}
-	}
--->
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Survey Maker</title>
+    <script>
+        function register() {
+            const form = document.forms["registerForm"];
+            const username = form["username"].value;
+            const email    = form["email"].value;
+            const password = form["password"].value;
+
+            document.getElementById("register_error").style.display = "none";
+            document.getElementById("username_error").style.display = "none";
+            document.getElementById("email_error").style.display = "none";
+            document.getElementById("password_error").style.display = "none";
+            document.getElementById("username_ex_error").style.display = "none";
+            document.getElementById("email_ex_error").style.display = "none";
+
+            if (!username || 0 === username.length || !email || 0 === email.length || !password || 0 === password.length) {
+                document.getElementById("register_error").style.display = "inline-block";
+            }
+            if (!username.match(/^[a-zA-Z0-9\.\-_]*$/u)) {
+                document.getElementById("username_error").style.display = "inline-block";
+            }
+            if (!email.match(/\S+@\S+\.\S+/)) {
+                document.getElementById("email_error").style.display = "inline-block";
+            }
+            if (!password.match(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.])(?=.{8,})/u)) {
+                document.getElementById("password_error").style.display = "inline-block";
+            }
+
+            xhttp = new XMLHttpRequest();
+            const url = "http://localhost:8080/users/all";
+            xhttp.open('GET', url, true);
+            xhttp.send(null);
+
+            xhttp.onreadystatechange = function () {
+                if (xhttp.status === 200) {
+                    if (xhttp.readyState === 4) {
+                        const det = eval("(" + xhttp.responseText + ")");
+                        for (i = 0; i < det.length; i++) {
+                            if(username == det[i].username) {
+                                document.getElementById("username_ex_error").style.display = "inline-block";
+                            }
+                            if(email == det[i].email) {
+                                document.getElementById("email_ex_error").style.display = "inline-block";
+                            }
+                        }
+                    }
+                } else
+                    console.log("Error: " + xhttp.responseText);
+            };
+
+            if(document.getElementById("register_error").style.display == "none"
+                    && document.getElementById("username_error").style.display == "none"
+                    && document.getElementById("email_error").style.display == "none"
+                    && document.getElementById("password_error").style.display == "none"
+                    && document.getElementById("username_ex_error").style.display == "none"
+                    && document.getElementById("email_ex_error").style.display == "none") {
+
+                console.log("register")
+
+                xhttp2 = new XMLHttpRequest();
+                xhttp2.open('POST', "http://localhost:8080/users/register", true);
+                xhttp2.setRequestHeader("Content-Type", "application/json");
+                xhttp2.send(JSON.stringify({
+                    username: username,
+                    password: password,
+                    email: email
+                }));
+
+            }
+
+            return false;
+        }
+    </script>
 </head>
 <body>
-<form class="container" method="post" action="register_page.php">
+<form class="container" method="post" id="registerForm">
     <img class="img" src="images/img-3.png" alt="avatar">
 
     <h1>Регистрация</h1>
-    <?php include("errors.php"); ?>
+    <span class="error"><p id="register_error">Всички полета за задължителни.</p></span>
     <div class="form-control">
-        <label for="username">Потребителско име</label></br>
+        <label for="username">Потребителско име</label><br/>
+        <span class="error"><p id="username_error">* Полето <b>'Потребителско име'</b> може да съдържа главни и малки букви на латиница, цифри и знаците ., - и _.</p></span>
+        <span class="error"><p id="username_ex_error">* Потребителското име е заето.</p></span><br/>
         <input
                 type="text"
                 name="username"
                 id="username"
                 required
-                value="<!-- keep old username value in case of error -->"
         />
     </div>
     <div class="form-control">
         <label for="email">Имейл</label><br/>
+        <span class="error"><p id="email_error">* Въведеният <b>'Имейл'</b> е невалиден.</p></span>
+        <span class="error"><p id="email_ex_error">* Въведеният имейл е зает.</p></span><br/>
         <input
                 type="email"
                 name="email"
                 id="email"
                 required
-                value="<!-- keep old email value in case of error -->"
         />
     </div>
     <div class="form-control">
         <label for="password">Парола</label><br/>
+        <span class="error"><p id="password_error">* Полето <b>'Парола'</b> може да съдържа главни и малки букви на латиница, цифри и знаците ., - и _.</p></span><br/>
         <input
                 type="password"
                 name="password"
@@ -80,7 +117,7 @@
     </div>
     <br/>
     <div>
-        <button type="submit" name="register" class="button button2">Регистрация</button>
+        <button type="submit" class="button button2" onclick="return register()">Регистрация</button>
         <div class="right">
             <br/><br/>
             <p>Ако вече имаш регистрация натисни <a href="login_page.html">тук</a>.</p>
