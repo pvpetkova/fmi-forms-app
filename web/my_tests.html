@@ -24,7 +24,7 @@
                                 "            <h3>" + det[i].surveyName + "</h3>" +
                                 "        <a href=\"view_test.html?test=" + det[i].surveyId + "\" class=\"button button4\">Разгледай</a><!-- + survey_name to url -->" +
                                 "        <!--\t\tTODO: how do you copy a working link? -->" +
-                                "        <button onclick='navigator.clipboard.writeText(copyText)' class=\"button button4\">Копирай линк</button><br/>" +
+                                "        <button onclick=\"copyURL(" + det[i].surveyId + ")" + "\" class=\"button button4\">Копирай линк</button><br/>" +
                                 "        </div><br/><br/><br/><br/>";
                         }
                         document.getElementById('surveys-container').innerHTML = html;
@@ -32,6 +32,15 @@
                 } else
                     console.log("Error: " + xhttp.responseText);
             };
+        }
+        function copyURL(surveyId) {
+            const elem = document.createElement('textarea');
+            elem.value = "http://localhost:63342/demo/web/solve_test.html?test=" + surveyId;
+
+            document.body.appendChild(elem);
+   elem.select();
+   document.execCommand('copy');
+   document.body.removeChild(elem);
         }
     </script>
 </head>

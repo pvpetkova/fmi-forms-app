@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Test Maker</title>
 	<script>
-        function login() {
+        function login_v1() {
             const form = document.forms["loginForm"];
             const username = form["username"].value;
             const password = form["password"].value;
@@ -32,6 +32,22 @@
             };
             document.getElementById("login_error").style.display = "inline-block";
             return false;
+        }
+        function login() {
+            const form = document.forms["loginForm"];
+            const username = form["username"].value;
+            const password = form["password"].value;
+
+            var xhttp = new XMLHttpRequest();
+
+            const url = "http://localhost:8080/users/login?name=natalka98&password=ashujas6532";
+            xhttp.open("POST", url, true);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.send(JSON.stringify({
+                   user: username,
+                   password: password
+            }));
+
         }
 </script>
 </head>

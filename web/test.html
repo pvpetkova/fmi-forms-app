@@ -40,7 +40,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" type="text/css" href="style.css">
-		<title>Survey Maker</title> 
+		<title>Survey Maker</title>
 	</head>
 	<body>
 		<div class="topnav">
@@ -56,23 +56,22 @@
 			<form method="post" action="test.php" enctype="multipart/form-data">
 			
 				<label>Въпрос: </label>
-				<textarea name="question_text" placeholder="Твоят текст тук.." class="longtext"><!-- keep old question_text value in case of error -->
-</textarea><br /><br />
+				<textarea name="question_text" placeholder="Твоят текст тук.." class="longtext"></textarea><br /><br />
 				
 				<label>Отговор 1: </label><br />
-				<input type="text" name="choice1" required value="<!-- keep old choise1 value in case of error -->"/><br />
+				<input type="text" name="choice1" required /><br />
 			
 				<label>Отговор 2: </label><br />
-				<input type="text" name="choice2" required value="<!-- keep old choise2 value in case of error -->"/><br />
+				<input type="text" name="choice2" required /><br />
 			
 				<label>Отговор 3: </label><br />
-				<input type="text" name="choice3" value="<!-- keep old choise3 value in case of error -->"/><br>
+				<input type="text" name="choice3" /><br>
 			
 				<label>Отговор 4: </label><br />
-				<input type="text" name="choice4" value="<!-- keep old choise4 value in case of error -->"/><br />
+				<input type="text" name="choice4" /><br />
 			
 				<label>Отговор 5: </label><br />
-				<input type="text" name="choice5" value="<!-- keep old choise5 value in case of error -->"/><br />
+				<input type="text" name="choice5" /><br />
 			
 				<button type="submit" name="next" class="button button2">Следващ въпрос</button><br /><br /><br />
 				<button type="submit" name="last" class="button button2">Завърши анкетата</button>

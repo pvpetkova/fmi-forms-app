@@ -38,6 +38,7 @@
                 userId: 1
             }));
 
+            window.location.replace("test.html?surveyName="+surveyName);
             return false;
         }
     </script>
@@ -58,7 +59,7 @@
         <label for="surveyName">Заглавие на анкета: </label><br/>
         <input id="surveyName" type="text" name="survey_name" required/><br/>
 
-        <input type="button" value="Добавяне на въпроси" onclick="saveSurvey()" class="button button3"/>
+        <input type="submit" value="Добавяне на въпроси" onclick="return saveSurvey()" class="button button3"/>
     </form>
 </div>
 </body>
