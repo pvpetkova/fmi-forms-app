@@ -6,7 +6,7 @@
     <title>Survey Maker</title>
     <script src="scripts/script.js"></script>
 </head>
-<body onload="init()">
+<body onload="checkIsLoggedIn()">
 <div class="topnav">
     <a class="active" href="home_page.html">Начало</a>
     <a href="survey.html">Създай анкета</a>
@@ -15,15 +15,6 @@
 </div>
 
 <div class="container">
-    <tr>
-        <td>Enter Employee ID :</td>
-        <input type="button" value="Get Details" onclick="getAllUsers()"/>
-    </tr>
-    <tr>
-        <td>Enter Name :</td>
-        <td><input type="text" readonly="true" id="empname" size="20"/></td>
-    </tr>
-
     <img class="img" src="images/img-2.png" alt="logo">
     <h2>Създайте онлайн анкета, която ангажира вашите колеги, ученици или приятели - започнете за минути.</h2><br/>
     <p>Използвайте това приложение, за да създавате анкети

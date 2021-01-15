@@ -4,22 +4,8 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Survey Maker</title>
+    <script src="scripts/script.js"></script>
     <script>
-        function getSearchParameters() {
-            var prmstr = window.location.search.substr(1);
-            return prmstr != null && prmstr !== "" ? transformToAssocArray(prmstr) : {};
-        }
-
-        function transformToAssocArray(prmstr) {
-            var params = {};
-            var prmarr = prmstr.split("&");
-            for (var i = 0; i < prmarr.length; i++) {
-                var tmparr = prmarr[i].split("=");
-                params[tmparr[0]] = tmparr[1];
-            }
-            return params;
-        }
-
         function getSurveyById() {
             xhttp = new XMLHttpRequest();
             const surveyId = getSearchParameters()['test'];
@@ -78,15 +64,13 @@
     <a href="home_page.html">Начало</a>
     <a href="survey.html">Създай анкета</a>
     <a class="active" href="my_tests.html">Моите анкети</a>
-    <a class="active" href="logout.php" style="float:right;">Изход</a>
+    <a class="active" href="#" onclick="logout()" style="float:right;">Изход</a>
 </div>
 
 <div class="container">
     <h1 id="header"></h1>
     <div class='box box2' id="survey-container"></div>
     <br/>
-
-</div>
 </div>
 </body>
 </html>

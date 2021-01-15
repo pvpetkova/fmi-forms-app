@@ -47,32 +47,32 @@
 		  <a href="home_page.html">Начало</a>
 		  <a href="survey.html">Създай анкета</a>
 		  <a class="active" href="my_tests.html">Моите анкети</a>
-		  <a class="active" href="logout.php" style="float:right;">Изход</a>
+            <a class="active" href="#" onclick="logout()" style="float:right;">Изход</a>
 		</div>
-			
+
 		<div class="container">
 		<img class="img" src="images/img-4.png" alt="pen">
 			<h1>Създаване на анкета</h1>
 			<form method="post" action="test.php" enctype="multipart/form-data">
-			
+
 				<label>Въпрос: </label>
 				<textarea name="question_text" placeholder="Твоят текст тук.." class="longtext"></textarea><br /><br />
-				
+
 				<label>Отговор 1: </label><br />
 				<input type="text" name="choice1" required /><br />
-			
+
 				<label>Отговор 2: </label><br />
 				<input type="text" name="choice2" required /><br />
-			
+
 				<label>Отговор 3: </label><br />
 				<input type="text" name="choice3" /><br>
-			
+
 				<label>Отговор 4: </label><br />
 				<input type="text" name="choice4" /><br />
-			
+
 				<label>Отговор 5: </label><br />
 				<input type="text" name="choice5" /><br />
-			
+
 				<button type="submit" name="next" class="button button2">Следващ въпрос</button><br /><br /><br />
 				<button type="submit" name="last" class="button button2">Завърши анкетата</button>
 			</form>

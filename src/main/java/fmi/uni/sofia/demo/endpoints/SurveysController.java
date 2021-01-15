@@ -1,17 +1,16 @@
 package fmi.uni.sofia.demo.endpoints;
 
 
-import fmi.uni.sofia.demo.model.Survey;
 import fmi.uni.sofia.demo.model.Question;
+import fmi.uni.sofia.demo.model.SubmittedAnswer;
+import fmi.uni.sofia.demo.model.Survey;
 import fmi.uni.sofia.demo.model.User;
-import fmi.uni.sofia.demo.repo.AnswerRepository;
-import fmi.uni.sofia.demo.repo.QuestionRepository;
-import fmi.uni.sofia.demo.repo.SurveyRepository;
-import fmi.uni.sofia.demo.repo.UserRepository;
+import fmi.uni.sofia.demo.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -26,6 +25,8 @@ public class SurveysController {
     private QuestionRepository questionRepository;
     @Autowired
     private AnswerRepository answerRepository;
+    @Autowired
+    private SubmittedAnswerRepository submittedAnswerRepository;
 
     @GetMapping(path = "/all")
     public @ResponseBody
@@ -70,6 +71,17 @@ public class SurveysController {
     public @ResponseBody
     String addNewSurvey(@RequestBody Question question) {
         questionRepository.save(question);
+        return "Saved";
+    }
+
+    @PostMapping(path = "/submit")
+    public @ResponseBody
+    String submitAnswers(@RequestBody List<SubmittedAnswer> answers) {
+        LocalDateTime time = LocalDateTime.now();
+        answers.forEach(answer -> {
+            answer.setTimeSubmitted(time);
+            submittedAnswerRepository.save(answer);
+        });
         return "Saved";
     }
 }

@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Test Maker</title>
-	<script>
+    <script>
         function login_v1() {
             const form = document.forms["loginForm"];
+            console.log(form)
             const username = form["username"].value;
             const password = form["password"].value;
 
@@ -20,7 +21,10 @@
                     if (xhttp.readyState === 4) {
                         const det = eval("(" + xhttp.responseText + ")");
                         for (i = 0; i < det.length; i++) {
-                            if(username == det[i].username && password == det[i].password) {
+                            if (username === det[i].username && password === det[i].password) {
+                                // set as current user
+                                sessionStorage.setItem('user', username);
+
                                 window.location.replace("home_page.html");
                                 document.getElementById("login_error").style.display = "none";
                                 return false;
@@ -31,8 +35,8 @@
                     console.log("Error: " + xhttp.responseText);
             };
             document.getElementById("login_error").style.display = "inline-block";
-            return false;
         }
+
         function login() {
             const form = document.forms["loginForm"];
             const username = form["username"].value;
@@ -44,38 +48,42 @@
             xhttp.open("POST", url, true);
             xhttp.setRequestHeader("Content-Type", "application/json");
             xhttp.send(JSON.stringify({
-                   user: username,
-                   password: password
+                user: username,
+                password: password
             }));
 
         }
-</script>
+    </script>
 </head>
 <body>
-<form class="container" method="post" id="loginForm">
+<div class="container">
     <img class="img" src="images/img-3.png" alt="avatar">
 
-    <h1>Вход в системата</h1>
-    <span class="error"><p id="login_error">Грешно потребителско име и/или парола.</p></span>
-    <br/><br/>
+    <div class="login-container">
+        <form id="loginForm">
+            <h1>Вход в системата</h1>
+            <span class="error"><p id="login_error">Грешно потребителско име и/или парола.</p></span>
+            <br/><br/>
 
-    <label for="username">Потребителско име</label><br/>
-    <input type="text"
-           name="username"
-           id="username">
+            <label for="username">Потребителско име</label><br/>
+            <input type="text"
+                   name="username"
+                   id="username"><br/>
 
-    <label for="password">Парола</label><br/>
-    <input type="password"
-           name="password"
-           id="password"
-           required>
-    <br/><br/><br/>
+            <label for="password">Парола</label><br/>
+            <input type="password"
+                   name="password"
+                   id="password"
+                   required>
+            <br/><br/><br/>
+        </form>
 
-    <button type="submit" class="button button2" onclick="return login()">Вход</button>
-    <div class="right">
+        <button class="button button2" onclick="login_v1()">Вход</button>
         <br/><br/>
-        <p>Ако все още нямаш регистрация натисни <a href="register_page.html">тук</a>.</p>
+        <p class="right" style="right: 55%">Нямаш регистрация? Натисни <a style="color: #FFB6C1" href="register_page.html">тук</a>.
+        </p>
     </div>
-</form>
+
+</div>
 </body>
 </html>

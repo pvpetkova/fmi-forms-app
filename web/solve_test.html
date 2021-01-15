@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Survey Maker</title>
+    <script src="scripts/script.js"></script>
+</head>
+<body onload="load()">
+<div class="container">
+    <h1 id="header"></h1>
+    <div class='box box2' id="survey-container"></div>
+    <br/>
+</div>
+<script>
+    let questionsArray;
+    let surveyInfo;
+    let userAnswersArray;
+
+    function getSurveyById() {
+        xhttp = new XMLHttpRequest();
+        const surveyId = getSearchParameters()['test'];
+
+        const url = "http://localhost:8080/surveys/" + surveyId;
+        xhttp.open('GET', url, true);
+        xhttp.send(null);
+        xhttp.onreadystatechange = function () {
+            if (xhttp.status === 200) {
+                if (xhttp.readyState === 4) {
+                    const det = eval("(" + xhttp.responseText + ")");
+                    surveyInfo = det;
+
+                    document.getElementById('header').innerText = det.surveyName;
+                }
+            } else
+                console.log("Error: " + xhttp.responseText);
+        };
+    }
+
+    function getSurveyQuestions() {
+        const xhttpr = new XMLHttpRequest();
+        const surveyId = getSearchParameters()['test'];
+
+        const url = "http://localhost:8080/surveys/" + surveyId + "/questions";
+        let html = '<form id="answerForm">';
+        xhttpr.open('GET', url, true);
+        xhttpr.send(null);
+        xhttpr.onreadystatechange = function () {
+            if (xhttpr.status === 200) {
+                if (xhttpr.readyState === 4) {
+                    const questions = eval("(" + xhttpr.responseText + ")");
+                    questionsArray = questions;
+
+                    for (let i = 0; i < questions.length; i++) {
+                        html += "<p><b>" + questions[i].questionId + ". " + questions[i].questionText + "</b></p>";
+                        for (let j = 0; j < questions[i].answers.length; j++) {
+                            let answerId = questions[i].surveyId + "_" +
+                                questions[i].questionId + "_" + questions[i].answers[j].answerId;
+                            let answerName = questions[i].surveyId + "_" +
+                                questions[i].questionId;
+
+                            html += "<input type=\"radio\" id=\"" + answerId + "\" value=\""
+                                + questions[i].answers[j].answerId + "\" name='" + answerName + "'\"/>";
+                            html += "<label for=\"" + answerId + "\">" + questions[i].answers[j].answerText + "</label>"
+                        }
+                        html += "<br/>"
+                    }
+                    html += "</form> <br/><br/> " +
+                        "<button name=\"finish_test\" class=\"button\" onclick='sendAnswers()'>Завърши анкетата</button><br/>"
+                    document.getElementById('survey-container').innerHTML = html;
+                }
+            } else
+                console.log("Error: " + xhttpr.responseText);
+        };
+    }
+
+    function load() {
+        getSurveyById();
+        getSurveyQuestions();
+    }
+
+    function sendAnswers() {
+        userAnswersArray = [];
+        const form = document.forms["answerForm"];
+        for (let i = 0; i < questionsArray.length; i++) {
+            let name = surveyInfo.surveyId + "_" + questionsArray[i].questionId;
+            console.log(document.getElementById('1_1_1').value)
+
+
+            userAnswersArray.push({
+                surveyId: surveyInfo.surveyId,
+                questionId: questionsArray[i].questionId,
+                // how to identify input
+                answerId: document.querySelector("input[name=\'" + name + "\']:checked").value
+            })
+        }
+        // console.log(questionsArray)
+        // console.log(surveyInfo);
+        // console.log(userAnswersArray);
+    }
+</script>
+<!--<div class="container">-->
+<!--    <form action="check_answ.php" method="post">-->
+<!--        <h1>&lt;!&ndash;print $survey_name;-->
+<!--			&ndash;&gt;</h1>-->
+
+<!--        &lt;!&ndash; ?php-->
+<!--        $i = 1;-->
+<!--        $sql = "SELECT * FROM questions-->
+<!--                WHERE survey_id = '$survey_id'";-->
+<!--        $result = $connection->query($sql); &ndash;&gt;-->
+
+<!--        <div class='box box2'>-->
+<!--            &lt;!&ndash; print question text and possible answers-->
+<!--            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {-->
+<!--                $quest_id = $row['question_id']; ?>-->
+
+<!--                <h4> question № $i++ . '. ' . $row['text']; ></h4>-->
+
+<!--                    $sql2 = "SELECT * FROM answers-->
+<!--                             WHERE quest_id='$quest_id'";-->
+<!--                    $result2 = $connection->query($sql2);-->
+
+<!--                    while ($row2 = $result2->fetch(PDO::FETCH_ASSOC)) { ?>-->
+<!--                        <input type="radio" name="quizcheck[&lt;!&ndash; print 'answer_id'" value=" echo $row2['correct']; ?>">-->
+<!--                            <&#45;&#45;?php echo htmlentities($row2['answer_text'], ENT_QUOTES); ?></input><br /><br />-->
+<!--                 &ndash;&gt;-->
+
+
+<!--            <button type="submit" name="finish_test" class="button">Завърши анкетата</button>-->
+<!--            <br/><br/>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</div>-->
+</body>
+</html>

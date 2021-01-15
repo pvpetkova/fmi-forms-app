@@ -8,7 +8,7 @@
         function register() {
             const form = document.forms["registerForm"];
             const username = form["username"].value;
-            const email    = form["email"].value;
+            const email = form["email"].value;
             const password = form["password"].value;
 
             document.getElementById("register_error").style.display = "none";
@@ -41,10 +41,10 @@
                     if (xhttp.readyState === 4) {
                         const det = eval("(" + xhttp.responseText + ")");
                         for (i = 0; i < det.length; i++) {
-                            if(username == det[i].username) {
+                            if (username === det[i].username) {
                                 document.getElementById("username_ex_error").style.display = "inline-block";
                             }
-                            if(email == det[i].email) {
+                            if (email === det[i].email) {
                                 document.getElementById("email_ex_error").style.display = "inline-block";
                             }
                         }
@@ -53,22 +53,23 @@
                     console.log("Error: " + xhttp.responseText);
             };
 
-            if(document.getElementById("register_error").style.display == "none"
-                    && document.getElementById("username_error").style.display == "none"
-                    && document.getElementById("email_error").style.display == "none"
-                    && document.getElementById("password_error").style.display == "none"
-                    && document.getElementById("username_ex_error").style.display == "none"
-                    && document.getElementById("email_ex_error").style.display == "none") {
+            if (document.getElementById("register_error").style.display == "none"
+                && document.getElementById("username_error").style.display == "none"
+                && document.getElementById("email_error").style.display == "none"
+                && document.getElementById("password_error").style.display == "none"
+                && document.getElementById("username_ex_error").style.display == "none"
+                && document.getElementById("email_ex_error").style.display == "none") {
 
-                    xhttp2 = new XMLHttpRequest();
-                    xhttp2.open('POST', "http://localhost:8080/users/register", true);
-                    xhttp2.setRequestHeader("Content-Type", "application/json");
-                    xhttp2.send(JSON.stringify({
-                        username: username,
-                        password: password,
-                        email: email
+                xhttp2 = new XMLHttpRequest();
+                xhttp2.open('POST', "http://localhost:8080/users/register", true);
+                xhttp2.setRequestHeader("Content-Type", "application/json");
+                xhttp2.send(JSON.stringify({
+                    username: username,
+                    password: password,
+                    email: email
                 }));
 
+                sessionStorage.setItem('user', username);
                 window.location.replace("home_page.html");
             }
 
@@ -119,7 +120,7 @@
         <button type="submit" class="button button2" onclick="return register()">Регистрация</button>
         <div class="right">
             <br/><br/>
-            <p>Ако вече имаш регистрация натисни <a href="login_page.html">тук</a>.</p>
+            <p>Ако вече имаш регистрация натисни <a style="color: #FFB6C1" href="login_page.html">тук</a>.</p>
         </div>
     </div>
 </form>

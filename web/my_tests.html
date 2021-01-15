@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Survey Maker</title>
+    <script src="scripts/script.js"></script>
     <script>
         function getSurveysForUser() {
             xhttp = new XMLHttpRequest();
             var html = "<table><tbody>";
-
-            const url = "http://localhost:8080/surveys/for-user/natalka98";
+            const user = sessionStorage.getItem('user')
+            const url = "http://localhost:8080/surveys/for-user/" + user;
             xhttp.open('GET', url, true);
             xhttp.send(null);
             xhttp.onreadystatechange = function () {
@@ -18,12 +19,10 @@
                         const det = eval("(" + xhttp.responseText + ")");
                         for (let i = 0; i < det.length; i++) {
                             // TODO make it work????
-                            const copyText = 'test_solve2.html?surveyId=' + det[i].surveyId + "";
 
                             html += "        <div class='box'>" +
                                 "            <h3>" + det[i].surveyName + "</h3>" +
                                 "        <a href=\"view_test.html?test=" + det[i].surveyId + "\" class=\"button button4\">Разгледай</a><!-- + survey_name to url -->" +
-                                "        <!--\t\tTODO: how do you copy a working link? -->" +
                                 "        <button onclick=\"copyURL(" + det[i].surveyId + ")" + "\" class=\"button button4\">Копирай линк</button><br/>" +
                                 "        </div><br/><br/><br/><br/>";
                         }
@@ -33,14 +32,15 @@
                     console.log("Error: " + xhttp.responseText);
             };
         }
+
         function copyURL(surveyId) {
             const elem = document.createElement('textarea');
             elem.value = "http://localhost:63342/demo/web/solve_test.html?test=" + surveyId;
 
             document.body.appendChild(elem);
-   elem.select();
-   document.execCommand('copy');
-   document.body.removeChild(elem);
+            elem.select();
+            document.execCommand('copy');
+            document.body.removeChild(elem);
         }
     </script>
 </head>
@@ -49,7 +49,7 @@
     <a href="home_page.html">Начало</a>
     <a href="survey.html">Създай анкета</a>
     <a class="active" href="my_tests.html">Моите анкети</a>
-    <a class="active" href="logout.php" style="float:right;">Изход</a>
+    <a class="active" href="#" onclick="logout()" style="float:right;">Изход</a>
 </div>
 
 <div class="container">

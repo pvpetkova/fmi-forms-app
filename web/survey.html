@@ -25,6 +25,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Survey Maker</title>
+    <script src="scripts/script.js"></script>
     <script>
         function saveSurvey() {
             xhttp = new XMLHttpRequest();
@@ -38,7 +39,7 @@
                 userId: 1
             }));
 
-            window.location.replace("test.html?surveyName="+surveyName);
+            window.location.replace("test.html?surveyName=" + surveyName);
             return false;
         }
     </script>
@@ -48,7 +49,7 @@
     <a href="home_page.html">Начало</a>
     <a class="active" href="survey.html">Създай анкета</a>
     <a href="my_tests.html">Моите анкети</a>
-    <a class="active" href="logout.php" style="float:right;">Изход</a>
+    <a class="active" href="#" onclick="logout()" style="float:right;">Изход</a>
 </div>
 
 <div class="container">
