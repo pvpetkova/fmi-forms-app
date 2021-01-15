@@ -11,24 +11,25 @@
             const email = form["email"].value;
             const password = form["password"].value;
 
-            document.getElementById("register_error").style.display = "none";
-            document.getElementById("username_error").style.display = "none";
-            document.getElementById("email_error").style.display = "none";
-            document.getElementById("password_error").style.display = "none";
-            document.getElementById("username_ex_error").style.display = "none";
-            document.getElementById("email_ex_error").style.display = "none";
-
             if (!username || 0 === username.length || !email || 0 === email.length || !password || 0 === password.length) {
                 document.getElementById("register_error").style.display = "inline-block";
+            } else {
+                document.getElementById("register_error").style.display = "none";
             }
             if (!username.match(/^[a-zA-Z0-9\.\-_]*$/u)) {
                 document.getElementById("username_error").style.display = "inline-block";
+            } else {
+                document.getElementById("username_error").style.display = "none";
             }
             if (!email.match(/\S+@\S+\.\S+/)) {
                 document.getElementById("email_error").style.display = "inline-block";
+            } else {
+                document.getElementById("email_error").style.display = "none";
             }
             if (!password.match(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.])(?=.{8,})/u)) {
                 document.getElementById("password_error").style.display = "inline-block";
+            } else {
+                document.getElementById("password_error").style.display = "none";
             }
 
             xhttp = new XMLHttpRequest();
@@ -52,6 +53,13 @@
                 } else
                     console.log("Error: " + xhttp.responseText);
             };
+
+            if(document.getElementById("username_ex_error").style.display === null) {
+                document.getElementById("username_ex_error").style.display = "none";
+            }
+            if(document.getElementById("email_ex_error").style.display === null) {
+                document.getElementById("email_ex_error").style.display = "none";
+            }
 
             if (document.getElementById("register_error").style.display == "none"
                 && document.getElementById("username_error").style.display == "none"

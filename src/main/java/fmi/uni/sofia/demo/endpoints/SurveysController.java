@@ -1,10 +1,7 @@
 package fmi.uni.sofia.demo.endpoints;
 
 
-import fmi.uni.sofia.demo.model.Question;
-import fmi.uni.sofia.demo.model.SubmittedAnswer;
-import fmi.uni.sofia.demo.model.Survey;
-import fmi.uni.sofia.demo.model.User;
+import fmi.uni.sofia.demo.model.*;
 import fmi.uni.sofia.demo.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -71,6 +68,13 @@ public class SurveysController {
     public @ResponseBody
     String addNewSurvey(@RequestBody Question question) {
         questionRepository.save(question);
+        return "Saved";
+    }
+
+    @PostMapping(path = "/add-answers")
+    public @ResponseBody
+    String addNewSurvey(@RequestBody Answer answer) {
+        answerRepository.save(answer);
         return "Saved";
     }
 

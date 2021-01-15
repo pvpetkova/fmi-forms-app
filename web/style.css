@@ -95,6 +95,7 @@ body {
     text-decoration: none;
     display: inline-block;
     font-size: 20px;
+    z-index: 10;
 }
 
 button:hover {
@@ -130,9 +131,8 @@ input[type=text], input[type=password], input[type=number], input[type=email] {
 .longtext {
     height: 80px;
     width: 43.5%;
-    padding: 12px 5px;
+    padding: 10px 5px;
     border: 1px solid #ccc;
-    margin-left: 5%;
 }
 
 .comment {
@@ -192,7 +192,7 @@ span.error p {
   max-width: 50ch;
 }
 
-#login_error, #register_error, #username_error, #email_error, #password_error, #username_ex_error, #email_ex_error {
+#login_error, #register_error, #username_error, #email_error, #password_error, #username_ex_error, #email_ex_error, #add_error {
 	display: none;
 }
 

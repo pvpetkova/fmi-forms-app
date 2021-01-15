@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <title>Test Maker</title>
+    <title>Survey Maker</title>
     <script>
         function login_v1() {
             const form = document.forms["loginForm"];
@@ -24,6 +24,7 @@
                             if (username === det[i].username && password === det[i].password) {
                                 // set as current user
                                 sessionStorage.setItem('user', username);
+                                sessionStorage.setItem('userId', det[i].userId);
 
                                 window.location.replace("home_page.html");
                                 document.getElementById("login_error").style.display = "none";
@@ -34,7 +35,7 @@
                 } else
                     console.log("Error: " + xhttp.responseText);
             };
-            document.getElementById("login_error").style.display = "inline-block";
+                document.getElementById("login_error").style.display = "inline-block";
         }
 
         function login() {
@@ -51,7 +52,6 @@
                 user: username,
                 password: password
             }));
-
         }
     </script>
 </head>

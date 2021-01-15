@@ -1,24 +1,3 @@
-<!-- add questions 
-		$sql = "SELECT survey_id FROM surveys 
-				WHERE survey_name='$survey_name' AND user_id='$username'";
-		$result = $connection->query($sql);
-			
-		while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-			$existing_rec = $row['survey_id'];
-		}
-		
-		if($existing_rec == '') {
-			$stmt = $connection->prepare("INSERT INTO surveys (survey_name, user_id)
-										  VALUES (:survey_name, :username)");
-			$_SESSION['survey_name'] = $survey_name;
-			header('location: test.php');
-		} else {
-			array_push($errors, "Заглавието на анкетата трябва да е уникално. Анкета '$survey_name' вече съществува.");
-		}
-			
-	}	
--->
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,19 +7,48 @@
     <script src="scripts/script.js"></script>
     <script>
         function saveSurvey() {
-            xhttp = new XMLHttpRequest();
             const surveyName = document.getElementById("surveyName").value;
 
+            isUnique(surveyName);
+            if(document.getElementById("add_error").style.display !== "inline-block") {
+               addSurvey(surveyName);
+
+               window.location.replace("test.html?surveyName=" + surveyName);
+               return false;
+            }
+        }
+        function isUnique (surveyName) {
+            xhttpx = new XMLHttpRequest();
+            const user = sessionStorage.getItem('user');
+            const url = "http://localhost:8080/surveys/for-user/" + user;
+
+            xhttpx.open('GET', url, true);
+            xhttpx.send(null);
+            xhttpx.onreadystatechange = function () {
+                if (xhttpx.status === 200) {
+                    if (xhttpx.readyState === 4) {
+                        const det = eval("(" + xhttpx.responseText + ")");
+                        for (let i = 0; i < det.length; i++) {
+                            if(surveyName === det[i].surveyName) {
+                                document.getElementById("add_error").style.display = "inline-block";
+                            }
+                        }
+                    }
+                } else
+                    console.log("Error: " + xhttpx.responseText);
+            };
+        }
+        function addSurvey (surveyName) {
+            const user = sessionStorage.getItem('userId');
+
+            xhttp = new XMLHttpRequest();
             const url = "http://localhost:8080/surveys/add";
             xhttp.open('POST', url, true);
             xhttp.setRequestHeader("Content-Type", "application/json");
             xhttp.send(JSON.stringify({
                 surveyName: surveyName,
-                userId: 1
+                userId: user
             }));
-
-            window.location.replace("test.html?surveyName=" + surveyName);
-            return false;
         }
     </script>
 </head>
@@ -58,9 +66,10 @@
     <form>
 
         <label for="surveyName">Заглавие на анкета: </label><br/>
+        <span class="error"><p id="add_error">Заглавието на анкетата трябва да е уникално. Вие вече имате такава анкета.</p></span><br/>
         <input id="surveyName" type="text" name="survey_name" required/><br/>
 
-        <input type="submit" value="Добавяне на въпроси" onclick="return saveSurvey()" class="button button3"/>
+        <input type="button" value="Добавяне на въпроси" onclick="return saveSurvey()" class="button button3"/>
     </form>
 </div>
 </body>

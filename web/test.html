@@ -1,46 +1,74 @@
-<!--?php
-	if(isset($_POST['next'])||isset($_POST['last'])){
-			
-		$sql = "SELECT survey_id FROM surveys WHERE survey_name='$survey_name' AND user_id='$username'";
-		$result = $connection->query($sql);
-			
-		while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-			$survey_id = $row['survey_id'];
-		}		
-		
-		$stmt = $connection->prepare("INSERT INTO questions (text, survey_id)
-									  VALUES (:question_text, :survey_id)");
-			
-			//find question ID
-			$sql = "SELECT question_id FROM questions WHERE text='$question_text'";
-			$result = $connection->query($sql);
-			
-			while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-				$quest_id = $row['question_id'];
-			}
-			
-			foreach($choices as $choice => $value){
-				if($value != ''){
-					$stmt = $connection->prepare("INSERT INTO answers (quest_id, answer_text)
-												  VALUES (:quest_id, :answer_text)");
-				}
-			}
-				
-			if(isset($_POST['last'])) {
-				header('location: my_tests.php'); 
-			} else {
-				header('location: test.php'); 
-			}
-		}
-	}
--->
-
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<title>Survey Maker</title>
+		<script>
+			function add () {
+				const queryString = window.location.search;
+				const urlParams = new URLSearchParams(queryString);
+				const surveyName = urlParams.get('surveyName');
+
+				xhttp = new XMLHttpRequest();
+				const user = sessionStorage.getItem('user');
+            	const url = "http://localhost:8080/surveys/for-user/" + user;
+
+            	xhttp.open('GET', url, true);
+            	xhttp.send(null);
+            	xhttp.onreadystatechange = function () {
+					if (xhttp.status === 200) {
+						if (xhttp.readyState === 4) {
+							const det = eval("(" + xhttp.responseText + ")");
+							for (let i = 0; i < det.length; i++) {
+								if(surveyName === det[i].surveyName) {
+								console.log(det[i].surveyName)
+									addQuestion(det[i].surveyId);
+								}
+							}
+						}
+					} else
+						console.log("Error: " + xhttp.responseText);
+				};
+			}
+			function addQuestion (survey) {
+				const form = document.forms["createQuestForm"];
+				const questText = form["question_text"].value;
+
+				xhttp = new XMLHttpRequest();
+				const user = sessionStorage.getItem('userId');
+				const url = "http://localhost:8080/surveys/add-question";
+
+				xhttp.open('POST', url, true);
+				xhttp.setRequestHeader("Content-Type", "application/json");
+				xhttp.send(JSON.stringify({
+					surveyId: survey,
+					questionText: questText,
+					userId: user
+				}));
+
+			}
+			function addAnswers () {
+				const form = document.forms["createQuestForm"];
+				const choice1 = form["choice1"].value;
+				const choice2 = form["choice2"].value;
+				const choice3 = form["choice3"].value;
+				const choice4 = form["choice4"].value;
+				const choice5 = form["choice5"].value;
+
+				xhttp = new XMLHttpRequest();
+				const user = sessionStorage.getItem('userId');
+				const url = "http://localhost:8080/surveys/add-answer";
+
+				xhttp.open('POST', url, true);
+				xhttp.setRequestHeader("Content-Type", "application/json");
+				/*xhttp.send(JSON.stringify({
+					surveyId: survey,
+					questionText: questText,
+					userId: user*/
+				}));
+			}
+		</script>
 	</head>
 	<body>
 		<div class="topnav">
@@ -53,9 +81,9 @@
 		<div class="container">
 		<img class="img" src="images/img-4.png" alt="pen">
 			<h1>Създаване на анкета</h1>
-			<form method="post" action="test.php" enctype="multipart/form-data">
+			<form enctype="multipart/form-data" id="createQuestForm">
 
-				<label>Въпрос: </label>
+				<label>Въпрос: </label><br /><br />
 				<textarea name="question_text" placeholder="Твоят текст тук.." class="longtext"></textarea><br /><br />
 
 				<label>Отговор 1: </label><br />
@@ -73,7 +101,7 @@
 				<label>Отговор 5: </label><br />
 				<input type="text" name="choice5" /><br />
 
-				<button type="submit" name="next" class="button button2">Следващ въпрос</button><br /><br /><br />
+				<button type="submit" name="next" class="button button2" onclick="add()">Следващ въпрос</button><br /><br /><br />
 				<button type="submit" name="last" class="button button2">Завърши анкетата</button>
 			</form>
 		</div>

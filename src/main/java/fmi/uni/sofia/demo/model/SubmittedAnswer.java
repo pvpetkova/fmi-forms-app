@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "submitted_answers")
+@Entity(name = "submitted")
 public class SubmittedAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,5 +21,6 @@ public class SubmittedAnswer {
     private Long surveyId;
     private Long questionId;
     private Long answerId;
+    private Long userKey;
     private LocalDateTime timeSubmitted;
 }
