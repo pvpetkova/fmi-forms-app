@@ -80,7 +80,7 @@ public class SurveysController {
     @PostMapping(path = "/submit")
     public @ResponseBody
     String submitAnswers(@RequestBody List<SubmittedAnswer> answers) {
-        Long randomUserId = (long) ((Math.random() * (1000)) + 0);
+        Long randomUserId = (long) ((Math.random() * (1000)) + 1);
         answers.forEach(answer -> {
             answer.setUserKey(randomUserId);
             submittedAnswerRepository.save(answer);

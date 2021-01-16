@@ -116,7 +116,7 @@
             xhttpr.onreadystatechange = function () {
                 if (xhttpr.status === 200) {
                     if (xhttpr.readyState === 4) {
-                        console.log('gotowo')
+                        window.location.replace("already_solved.html");
                     }
                 }
             }
