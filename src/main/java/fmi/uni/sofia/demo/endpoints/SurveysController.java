@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -81,9 +80,9 @@ public class SurveysController {
     @PostMapping(path = "/submit")
     public @ResponseBody
     String submitAnswers(@RequestBody List<SubmittedAnswer> answers) {
-        LocalDateTime time = LocalDateTime.now();
+        Long randomUserId = (long) ((Math.random() * (1000)) + 0);
         answers.forEach(answer -> {
-            answer.setTimeSubmitted(time);
+            answer.setUserKey(randomUserId);
             submittedAnswerRepository.save(answer);
         });
         return "Saved";

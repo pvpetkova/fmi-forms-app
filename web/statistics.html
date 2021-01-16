@@ -4,8 +4,34 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Survey Maker</title>
+    <script src="scripts/script.js"></script>
+    <script>
+        function getSurveyById() {
+            xhttp = new XMLHttpRequest();
+            const surveyId = getSearchParameters()['test'];
+
+            const url = "http://localhost:8080/surveys/" + surveyId;
+            xhttp.open('GET', url, true);
+            xhttp.send(null);
+            xhttp.onreadystatechange = function () {
+                if (xhttp.status === 200) {
+                    if (xhttp.readyState === 4) {
+                        const det = eval("(" + xhttp.responseText + ")");
+                        document.getElementById('header').innerText = det.surveyName;
+                    }
+                } else
+                    console.log("Error: " + xhttp.responseText);
+            };
+            // Return the table
+        }
+
+        function load() {
+            getSurveyById();
+            getSurveyQuestions();
+        }
+    </script>
 </head>
-<body>
+<body onload="load()">
 <div class="topnav">
     <a href="home_page.html">Начало</a>
     <a href="survey.html">Създай анкета</a>
@@ -14,41 +40,9 @@
 </div>
 
 <div class="container">
-	<h1></h1><!-- print statistics info
-				$survey_name = $_GET['test'];
-				$username = $_SESSION['username'];
-				
-				echo $survey_name;
-			?></h1>
-			<--?php
-				$i = 1;
-				$sql = "SELECT c.* FROM statistics c, surveys s 
-						WHERE s.survey_name='$survey_name' 
-						  AND s.survey_id=c.survey_id 
-						  AND s.user_id='$username'
-						ORDER BY c.num_correct DESC";
-				$result = $connection->query($sql); ?>
-				
-				<table>
-				<tr>
-					<th>Номер</th>  
-					<th>Факултетен номер</th>
-					<th>Име и фамилия</th>
-					<th>Точки</th>
-				</tr>
-  
-				<--?php 
-				while ($row = $result->fetch(PDO::FETCH_ASSOC)) { ?>
-					<tr>
-						<td><--?php echo $i; ?></td>
-						<td><--?php echo $row['fn']; ?></td>
-						<td><--?php echo $row['name_surname']; ?></td>
-						<td><--?php echo $row['num_correct']; ?></td>
-					</tr>
-				<--?php	
-					++$i;
-				} ?-->
-        </table>
+    <h1 id="header"></h1>
+    <div class='box box2' id="survey-container"></div>
+    <br/>
 </div>
 </body>
 </html>

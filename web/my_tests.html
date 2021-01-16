@@ -22,7 +22,8 @@
 
                             html += "        <div class='box'>" +
                                 "            <h3>" + det[i].surveyName + "</h3>" +
-                                "        <a href=\"view_test.html?test=" + det[i].surveyId + "\" class=\"button button4\">Разгледай</a><!-- + survey_name to url -->" +
+                                "        <a href=\"view_test.html?test=" + det[i].surveyId + "\" class=\"button button4\">Разгледай</a>" +
+                                "        <a href=\"statistics.html?test=" + det[i].surveyId + "\" class=\"button button4\">Статистики</a>" +
                                 "        <button onclick=\"copyURL(" + det[i].surveyId + ")" + "\" class=\"button button4\">Копирай линк</button><br/>" +
                                 "        </div><br/><br/><br/><br/>";
                         }
