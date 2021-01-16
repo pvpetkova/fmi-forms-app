@@ -39,7 +39,7 @@
                     if (xhttpr.readyState === 4) {
                         const questions = eval("(" + xhttpr.responseText + ")");
                         for (let i = 0; i < questions.length; i++) {
-                            html += "<p><b>" + questions[i].questionId + ". " + questions[i].questionText + "</b></p>";
+                            html += "<p><b>" + (i + 1) + ". " + questions[i].questionText + "</b></p>";
                             for (let j = 0; j < questions[i].answers.length; j++) {
                                 html += "<p>&#9655 " + questions[i].answers[j].answerText + "</p>";
                             }

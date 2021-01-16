@@ -4,32 +4,25 @@
 		<meta charset="UTF-8">
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<title>Survey Maker</title>
+		<script src="scripts/script.js"></script>
 		<script>
+			function finish() {
+				const queryString = window.location.search;
+				const urlParams = new URLSearchParams(queryString);
+				const surveyId = urlParams.get('surveyId');
+
+				addQuestion(surveyId);
+
+				window.location.replace("view_test.html?test=" + surveyId);
+				return false;
+			}
 			function add () {
 				const queryString = window.location.search;
 				const urlParams = new URLSearchParams(queryString);
-				const surveyName = urlParams.get('surveyName');
+				const surveyId = urlParams.get('surveyId');
 
-				xhttp = new XMLHttpRequest();
-				const user = sessionStorage.getItem('user');
-            	const url = "http://localhost:8080/surveys/for-user/" + user;
-
-            	xhttp.open('GET', url, true);
-            	xhttp.send(null);
-            	xhttp.onreadystatechange = function () {
-					if (xhttp.status === 200) {
-						if (xhttp.readyState === 4) {
-							const det = eval("(" + xhttp.responseText + ")");
-							for (let i = 0; i < det.length; i++) {
-								if(surveyName === det[i].surveyName) {
-								console.log(det[i].surveyName)
-									addQuestion(det[i].surveyId);
-								}
-							}
-						}
-					} else
-						console.log("Error: " + xhttp.responseText);
-				};
+				addQuestion(surveyId);
+				window.location.reload(true);
 			}
 			function addQuestion (survey) {
 				const form = document.forms["createQuestForm"];
@@ -47,8 +40,17 @@
 					userId: user
 				}));
 
+				xhttp.onreadystatechange = function () {
+                    if (xhttp.status === 200) {
+                        if (xhttp.readyState === 4) {
+                             const det = xhttp.responseText;
+                             addAnswers(survey, det);
+                        }
+                    }
+                };
+
 			}
-			function addAnswers () {
+			function addAnswers (survey, question) {
 				const form = document.forms["createQuestForm"];
 				const choice1 = form["choice1"].value;
 				const choice2 = form["choice2"].value;
@@ -56,17 +58,25 @@
 				const choice4 = form["choice4"].value;
 				const choice5 = form["choice5"].value;
 
-				xhttp = new XMLHttpRequest();
-				const user = sessionStorage.getItem('userId');
-				const url = "http://localhost:8080/surveys/add-answer";
+				var choices = [choice1, choice2, choice3, choice4, choice5];
 
-				xhttp.open('POST', url, true);
-				xhttp.setRequestHeader("Content-Type", "application/json");
-				/*xhttp.send(JSON.stringify({
-					surveyId: survey,
-					questionText: questText,
-					userId: user*/
-				}));
+
+				const user = sessionStorage.getItem('userId');
+				const url = "http://localhost:8080/surveys/add-answers";
+
+				for (let i = 0; i < choices.length; i++) {
+					if(choices[i]) {
+						xhttp = new XMLHttpRequest();
+
+						xhttp.open('POST', url, true);
+						xhttp.setRequestHeader("Content-Type", "application/json");
+						xhttp.send(JSON.stringify({
+							surveyId: survey,
+							questionId: question,
+							answerText: choices[i]
+						}));
+					}
+				}
 			}
 		</script>
 	</head>
@@ -101,8 +111,8 @@
 				<label>Отговор 5: </label><br />
 				<input type="text" name="choice5" /><br />
 
-				<button type="submit" name="next" class="button button2" onclick="add()">Следващ въпрос</button><br /><br /><br />
-				<button type="submit" name="last" class="button button2">Завърши анкетата</button>
+				<button type="button" name="next" class="button button2" onclick="add()">Следващ въпрос</button><br /><br /><br />
+				<button type="button" name="last" class="button button2" onclick="return finish()">Завърши анкетата</button>
 			</form>
 		</div>
 	</body>

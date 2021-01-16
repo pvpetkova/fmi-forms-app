@@ -28,14 +28,14 @@ public class UsersController {
 
     @PostMapping(path = "/register")
     public @ResponseBody
-    String addNewUser(@RequestBody User user) {
+    Long addNewUser(@RequestBody User user) {
         User n = new User();
         n.setUsername(user.getUsername());
         n.setEmail(user.getEmail());
         n.setPassword(user.getPassword());
 
-        userRepository.save(n);
-        return "Saved";
+        User insertedEntity = userRepository.save(n);
+        return insertedEntity.getUserId();
     }
 
     @GetMapping(path = "/all")

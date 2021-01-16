@@ -59,16 +59,16 @@ public class SurveysController {
 
     @PostMapping(path = "/add")
     public @ResponseBody
-    String addNewSurvey(@RequestBody Survey survey) {
-        surveyRepository.save(survey);
-        return "Saved";
+    Long addNewSurvey(@RequestBody Survey survey) {
+        Survey insertedEntity = surveyRepository.save(survey);
+        return insertedEntity.getSurveyId();
     }
 
     @PostMapping(path = "/add-question")
     public @ResponseBody
-    String addNewSurvey(@RequestBody Question question) {
-        questionRepository.save(question);
-        return "Saved";
+    Long addNewSurvey(@RequestBody Question question) {
+        Question insertedEntity = questionRepository.save(question);
+        return insertedEntity.getQuestionId();
     }
 
     @PostMapping(path = "/add-answers")

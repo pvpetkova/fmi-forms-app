@@ -8,14 +8,9 @@
     <script>
         function saveSurvey() {
             const surveyName = document.getElementById("surveyName").value;
+            document.getElementById("add_error").style.display = "none";
 
             isUnique(surveyName);
-            if(document.getElementById("add_error").style.display !== "inline-block") {
-               addSurvey(surveyName);
-
-               window.location.replace("test.html?surveyName=" + surveyName);
-               return false;
-            }
         }
         function isUnique (surveyName) {
             xhttpx = new XMLHttpRequest();
@@ -33,6 +28,10 @@
                                 document.getElementById("add_error").style.display = "inline-block";
                             }
                         }
+                        if (document.getElementById("add_error").style.display !== "inline-block") {
+                           addSurvey(surveyName);
+                           return false;
+                        }
                     }
                 } else
                     console.log("Error: " + xhttpx.responseText);
@@ -49,6 +48,16 @@
                 surveyName: surveyName,
                 userId: user
             }));
+
+            xhttp.onreadystatechange = function () {
+                    if (xhttp.status === 200) {
+                        if (xhttp.readyState === 4) {
+                             const det = xhttp.responseText;
+                             window.location.replace("test.html?surveyId=" + det);
+                             return false;
+                        }
+                    }
+                };
         }
     </script>
 </head>
