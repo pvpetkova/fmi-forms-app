@@ -20,7 +20,7 @@
                 if (xhttp.status === 200) {
                     if (xhttp.readyState === 4) {
                         const det = eval("(" + xhttp.responseText + ")");
-                        for (i = 0; i < det.length; i++) {
+                        for (let i = 0; i < det.length; i++) {
                             if (username === det[i].username && password === det[i].password) {
                                 // set as current user
                                 sessionStorage.setItem('user', username);
@@ -80,7 +80,8 @@
 
         <button class="button button2" onclick="login_v1()">Вход</button>
         <br/><br/>
-        <p class="right" style="right: 55%">Нямаш регистрация? Натисни <a style="color: #FFB6C1" href="register_page.html">тук</a>.
+        <p class="right" style="right: 55%">Нямаш регистрация? Натисни <a style="color: #FFB6C1"
+                                                                          href="register_page.html">тук</a>.
         </p>
     </div>
 
