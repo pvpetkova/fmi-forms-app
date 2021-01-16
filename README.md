@@ -10,4 +10,4 @@ https://docs.google.com/document/d/1WQcQ6f6iPx0UsjFekmFFJMqVbHUg_SL4PcOhVZN7_SQ/
 
 Демо:
 - `localhost:8080/users/all` изкарва всички потребители от базата
-- може да използва username: user, password: user за тестови цели
+-  може да се използва username: `user`, password: `user` за тестови цели

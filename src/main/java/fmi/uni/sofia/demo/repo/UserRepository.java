@@ -16,6 +16,8 @@ public interface UserRepository extends CrudRepository<User, Integer> {
             "from users u, surveys s, submitted d " +
             "where u.email = :email " +
             "  and u.userId = s.userId " +
-            "  and s.surveyId = d.surveyId")
+            "  and s.surveyId = d.surveyId" +
+            "  and d.time_submitted between (CURRENT_TIMESTAMP - interval 7 day) and CURRENT_TIMESTAMP")
+
     public Integer findCount(@Param("email") String email);
 }
