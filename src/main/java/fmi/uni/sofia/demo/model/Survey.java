@@ -19,7 +19,4 @@ public class Survey {
     private Long surveyId;
     private String surveyName;
     private Long userId;
-//    @OneToMany()
-//    @JoinColumn(name = "survey_id")
-//    private List<Questions> questions;
 }

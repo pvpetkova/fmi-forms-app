@@ -26,10 +26,11 @@ public class MailService {
     public void sendEmailToEveryone() {
         Iterable<User> allUsers = userRepository.findAll();
         allUsers.forEach(user -> {
-            // TODO construct message with stats for each user
             Integer count = userRepository.findCount(user.getEmail());
             String message = "Prez poslednata sedmica vashite anketi sa otgovoreni " + count + "puti. ";
-            sendEmail(user.getEmail(), message);
+            if (user.getEmail() != null) {
+                sendEmail(user.getEmail(), message);
+            }
         });
     }
 
