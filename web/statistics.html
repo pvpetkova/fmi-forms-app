@@ -5,7 +5,11 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Survey Maker</title>
     <script src="scripts/script.js"></script>
+
     <script>
+        let questionsArray;
+        let answersCount;
+
         function getSurveyById() {
             let xhttp = new XMLHttpRequest();
             const surveyId = getSearchParameters()['test'];
@@ -16,7 +20,7 @@
             xhttp.onreadystatechange = function () {
                 if (xhttp.status === 200) {
                     if (xhttp.readyState === 4) {
-                        const det = eval("(" + xhttp.responseText + ")");
+                        var det = eval("(" + xhttp.responseText + ")");
                         document.getElementById('header').innerText = det.surveyName;
                     }
                 } else
@@ -29,28 +33,85 @@
             let xhttp = new XMLHttpRequest();
             const surveyId = getSearchParameters()['test'];
 
-            const url = "http://localhost:8080/surveys/" + surveyId + "/answer-stats";
+            const url = "http://localhost:8080/surveys/" + surveyId + "/questions";
             xhttp.open('GET', url, true);
             xhttp.send(null);
             xhttp.onreadystatechange = function () {
                 if (xhttp.status === 200) {
                     if (xhttp.readyState === 4) {
-                        const det = eval("(" + xhttp.responseText + ")");
-                        console.log(det[1])
+                        const questions = eval("(" + xhttp.responseText + ")");
+                        questionsArray = questions;
 
-                        // document.getElementById('header').innerText = det.surveyName;
+                        let xhttp2 = new XMLHttpRequest()
+                        const url2 = "http://localhost:8080/surveys/" + surveyId + "/answer-stats";
+                        xhttp2.open('GET', url2, true);
+                        xhttp2.send(null);
+                        xhttp2.onreadystatechange = function () {
+                            if (xhttp2.status === 200) {
+                                if (xhttp2.readyState === 4) {
+                                    const det2 = eval("(" + xhttp2.responseText + ")");
+                                    answersCount = det2;
+
+                                    for (let i = 0; i < questions.length; i++) {
+                                        for (let j = 0; j < questions[i].answers.length; j++) {
+                                            var answerId = questions[i].answers[j].answerId;
+                                           // console.log(answerId)
+                                           // console.log(det2[answerId])
+                                           // console.log(" ")
+                                        }
+                                        visualizeChart();
+                                    }
+                                }
+                            } else
+                                console.log("Error: " + xhttp.responseText);
+                        };
                     }
                 } else
                     console.log("Error: " + xhttp.responseText);
             };
+
             // Return the table
         }
+
 
         function load() {
             getSurveyById();
             getsmt();
+           // chart();
+           //visualizeChart();
+        }
+
+        function visualizeChart() {
+             for (let i = 0; i < questionsArray.length; i++) {
+                for (let j = 0; j < questionsArray[i].answers.length; j++) {
+                    var answerId = questionsArray[i].answers[j].answerId;
+                    // Load google charts
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+
+                    // Draw the chart and set the chart values
+                    function drawChart() {
+                      var data = google.visualization.arrayToDataTable([
+                      ['Question', 'Answered count'],
+                      [questionsArray[i].answers[j].answerText, answersCount[questionsArray[i].answers[j].answerId]],
+                      [questionsArray[i].answers[j].answerText, answersCount[questionsArray[i].answers[j].answerId]],
+                      [questionsArray[i].answers[j].answerText, answersCount[questionsArray[i].answers[j].answerId]],
+                      [questionsArray[i].answers[j].answerText, answersCount[questionsArray[i].answers[j].answerId]],
+                      [questionsArray[i].answers[j].answerText, answersCount[questionsArray[i].answers[j].answerId]]
+
+                    ]);
+
+                      var options = {'title':questionsArray[i].questionText, 'width':550, 'height':400};
+
+                      // Display the chart inside the <div> element with id="piechart"
+                      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                      chart.draw(data, options);
+                    }
+                }
+             }
         }
     </script>
+
 </head>
 <body onload="load()">
 <div class="topnav">
@@ -62,8 +123,16 @@
 
 <div class="container">
     <h1 id="header"></h1>
-    <div class='box box2' id="survey-container"></div>
+    <div class='box box2' id="survey-container">
+        <div id="piechart"></div>
+
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+    </div>
     <br/>
+
+
 </div>
 </body>
 </html>
