@@ -29,7 +29,7 @@
             // Return the table
         }
 
-        function getsmt() {
+        function getStatisticsForSurvey() {
             let xhttp = new XMLHttpRequest();
             const surveyId = getSearchParameters()['test'];
 
@@ -39,8 +39,8 @@
             xhttp.onreadystatechange = function () {
                 if (xhttp.status === 200) {
                     if (xhttp.readyState === 4) {
-                        const questions = eval("(" + xhttp.responseText + ")");
-                        questionsArray = questions;
+                        questionsArray = eval("(" + xhttp.responseText + ")");
+                        console.log(questionsArray)
 
                         let xhttp2 = new XMLHttpRequest()
                         const url2 = "http://localhost:8080/surveys/" + surveyId + "/answer-stats";
@@ -49,18 +49,8 @@
                         xhttp2.onreadystatechange = function () {
                             if (xhttp2.status === 200) {
                                 if (xhttp2.readyState === 4) {
-                                    const det2 = eval("(" + xhttp2.responseText + ")");
-                                    answersCount = det2;
-
-                                    for (let i = 0; i < questions.length; i++) {
-                                        for (let j = 0; j < questions[i].answers.length; j++) {
-                                            var answerId = questions[i].answers[j].answerId;
-                                           // console.log(answerId)
-                                           // console.log(det2[answerId])
-                                           // console.log(" ")
-                                        }
-                                        visualizeChart();
-                                    }
+                                    answersCount = eval("(" + xhttp2.responseText + ")");
+                                    visualizeChart();
                                 }
                             } else
                                 console.log("Error: " + xhttp.responseText);
@@ -69,46 +59,42 @@
                 } else
                     console.log("Error: " + xhttp.responseText);
             };
-
-            // Return the table
         }
 
 
         function load() {
             getSurveyById();
-            getsmt();
-           // chart();
-           //visualizeChart();
+            getStatisticsForSurvey();
         }
 
         function visualizeChart() {
-             for (let i = 0; i < questionsArray.length; i++) {
+            let html = "";
+
+            for (let i = 0; i < questionsArray.length; i++) {
+                let chartData = [['Question', 'Answered count']];
+                html += "<div id='piechart" + i + "'></div>";
+                document.getElementById('stat-container').innerHTML = html;
                 for (let j = 0; j < questionsArray[i].answers.length; j++) {
-                    var answerId = questionsArray[i].answers[j].answerId;
-                    // Load google charts
-                    google.charts.load('current', {'packages':['corechart']});
-                    google.charts.setOnLoadCallback(drawChart);
-
-                    // Draw the chart and set the chart values
-                    function drawChart() {
-                      var data = google.visualization.arrayToDataTable([
-                      ['Question', 'Answered count'],
-                      [questionsArray[i].answers[j].answerText, answersCount[questionsArray[i].answers[j].answerId]],
-                      [questionsArray[i].answers[j].answerText, answersCount[questionsArray[i].answers[j].answerId]],
-                      [questionsArray[i].answers[j].answerText, answersCount[questionsArray[i].answers[j].answerId]],
-                      [questionsArray[i].answers[j].answerText, answersCount[questionsArray[i].answers[j].answerId]],
-                      [questionsArray[i].answers[j].answerText, answersCount[questionsArray[i].answers[j].answerId]]
-
-                    ]);
-
-                      var options = {'title':questionsArray[i].questionText, 'width':550, 'height':400};
-
-                      // Display the chart inside the <div> element with id="piechart"
-                      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-                      chart.draw(data, options);
-                    }
+                    let answerId = questionsArray[i].answers[j].answerId;
+                    chartData.push([questionsArray[i].answers[j].answerText, answersCount[answerId]]);
                 }
-             }
+
+                // Load google charts
+                google.charts.load('current', {'packages': ['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
+
+                // Draw the chart and set the chart values
+                function drawChart() {
+                    var data = google.visualization.arrayToDataTable(chartData);
+
+                    var options = {'title': questionsArray[i].questionText, 'width': 550, 'height': 400};
+
+                    // Display the chart inside the <div> element with id="piechart"
+                    var chart = new google.visualization.PieChart(document.getElementById('piechart' + i));
+                    chart.draw(data, options);
+                }
+            }
+
         }
     </script>
 
@@ -124,15 +110,10 @@
 <div class="container">
     <h1 id="header"></h1>
     <div class='box box2' id="survey-container">
-        <div id="piechart"></div>
-
+        <div id="stat-container"></div>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-
     </div>
     <br/>
-
-
 </div>
 </body>
 </html>
