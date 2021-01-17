@@ -26,7 +26,7 @@
                                 sessionStorage.setItem('user', username);
                                 sessionStorage.setItem('userId', det[i].userId);
 
-                                window.location.replace("home_page.html");
+                                window.location.replace("index.html");
                                 document.getElementById("login_error").style.display = "none";
                                 return false;
                             }
@@ -35,7 +35,7 @@
                 } else
                     console.log("Error: " + xhttp.responseText);
             };
-                document.getElementById("login_error").style.display = "inline-block";
+            document.getElementById("login_error").style.display = "inline-block";
         }
 
         function login() {
