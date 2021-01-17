@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class SubmittedAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long submitId;
     private Long surveyId;
     private Long questionId;
     private Long answerId;

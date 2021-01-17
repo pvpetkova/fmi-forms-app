@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(path = "/surveys")
@@ -40,13 +42,6 @@ public class SurveysEndpoint {
     @GetMapping(path = "/{surveyId}")
     public @ResponseBody
     Survey getSurveyById(@PathVariable(value = "surveyId") Long surveyId) {
-        return surveyRepository.findById(surveyId).orElse(null);
-    }
-
-    @GetMapping(path = "/{surveyId}/answers-stat")
-    public @ResponseBody
-    Survey getAnswersCountForSurvey(@PathVariable(value = "surveyId") Long surveyId) {
-        // TODO replace with new stats table
         return surveyRepository.findById(surveyId).orElse(null);
     }
 
@@ -86,5 +81,23 @@ public class SurveysEndpoint {
             submittedAnswerRepository.save(answer);
         });
         return "Saved";
+    }
+
+    @GetMapping(path = "/{surveyId}/answer-stats")
+    public @ResponseBody
+    Map<Long, Integer> countAnswers(@PathVariable(value = "surveyId") Long surveyId) {
+        Map<Long, Integer> result = new HashMap<>();
+        questionRepository.findAllBySurveyId(surveyId).forEach(
+                question -> {
+                    question.getAnswers().forEach(answer -> {
+                        Integer count = submittedAnswerRepository.count(
+                                answer.getAnswerId(),
+                                answer.getQuestionId(),
+                                answer.getSurveyId());
+                        result.put(answer.getAnswerId(), count);
+                    });
+                }
+        );
+        return result;
     }
 }

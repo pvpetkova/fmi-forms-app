@@ -7,7 +7,7 @@
     <script src="scripts/script.js"></script>
     <script>
         function getSurveyById() {
-            xhttp = new XMLHttpRequest();
+            let xhttp = new XMLHttpRequest();
             const surveyId = getSearchParameters()['test'];
 
             const url = "http://localhost:8080/surveys/" + surveyId;
@@ -25,9 +25,30 @@
             // Return the table
         }
 
+        function getsmt() {
+            let xhttp = new XMLHttpRequest();
+            const surveyId = getSearchParameters()['test'];
+
+            const url = "http://localhost:8080/surveys/" + surveyId + "/answer-stats";
+            xhttp.open('GET', url, true);
+            xhttp.send(null);
+            xhttp.onreadystatechange = function () {
+                if (xhttp.status === 200) {
+                    if (xhttp.readyState === 4) {
+                        const det = eval("(" + xhttp.responseText + ")");
+                        console.log(det[1])
+
+                        // document.getElementById('header').innerText = det.surveyName;
+                    }
+                } else
+                    console.log("Error: " + xhttp.responseText);
+            };
+            // Return the table
+        }
+
         function load() {
             getSurveyById();
-            getSurveyQuestions();
+            getsmt();
         }
     </script>
 </head>
