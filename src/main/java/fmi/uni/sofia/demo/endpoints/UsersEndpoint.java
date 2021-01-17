@@ -1,6 +1,5 @@
 package fmi.uni.sofia.demo.endpoints;
 
-import fmi.uni.sofia.demo.model.Survey;
 import fmi.uni.sofia.demo.model.User;
 import fmi.uni.sofia.demo.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping(path = "/users")
-public class UsersController {
+public class UsersEndpoint {
 
     @Autowired
     private UserRepository userRepository;

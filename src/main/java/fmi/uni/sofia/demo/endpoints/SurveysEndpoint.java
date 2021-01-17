@@ -11,7 +11,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(path = "/surveys")
-public class SurveysController {
+public class SurveysEndpoint {
 
     @Autowired
     private SurveyRepository surveyRepository;
